@@ -1,2 +1,2 @@
 # 1stP
-My 1st Project
+1st Project
