@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import Header from '@/components/Header';
 
 export const metadata: Metadata = {
   title: 'Capstone Web App',
-  description: 'A modern Next.js web application',
+  description: 'AI Models comparison and performance analysis',
 };
 
 export default function RootLayout({
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Header />
+        <div className="pt-16">{children}</div>
+      </body>
     </html>
   );
 }
