@@ -3,8 +3,8 @@ import './globals.css';
 import Header from '@/components/Header';
 
 export const metadata: Metadata = {
-  title: 'Capstone Web App',
-  description: 'AI Models comparison and performance analysis',
+  title: 'Machine Failure Predictions Web App',
+  description: 'Machine learning models for predicting and preventing machine failures',
 };
 
 export default function RootLayout({

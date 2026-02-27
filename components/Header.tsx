@@ -7,7 +7,7 @@ export default function Header() {
         <div className="flex justify-between items-center">
           <Link href="/">
             <h1 className="text-2xl font-bold text-gray-900 cursor-pointer hover:text-blue-600">
-              Capstone App
+              Machine Failure Predictions
             </h1>
           </Link>
           <ul className="flex gap-6">

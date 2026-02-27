@@ -1,6 +1,6 @@
-# Capstone Web App
+# Machine Failure Predictions Web App
 
-A modern web application built with Next.js 14, TypeScript, and Tailwind CSS.
+A modern web application for predicting and analyzing machine failures using machine learning models, built with Next.js 15, React 19, TypeScript, and Tailwind CSS.
 
 ## Features
 
@@ -43,12 +43,18 @@ npm run format
 ## Project Structure
 
 ```
-capstone-web-app/
+machine-failure-predictions/
 ├── app/                 # Next.js App Router
 │   ├── layout.tsx      # Root layout
 │   ├── page.tsx        # Home page
+│   ├── models/         # Models dashboard page
 │   └── globals.css     # Global styles
 ├── components/         # Reusable React components
+│   ├── Header.tsx      # Navigation header
+│   ├── ModelSidebar.tsx    # Model list sidebar
+│   └── ModelDetails.tsx    # Model details panel
+├── lib/                # Utility functions and data
+│   └── models.ts       # ML model data and helpers
 ├── public/             # Static assets
 ├── package.json        # Dependencies and scripts
 ├── tsconfig.json       # TypeScript configuration

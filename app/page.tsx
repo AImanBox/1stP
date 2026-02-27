@@ -5,7 +5,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
       <div className="text-center">
         <h1 className="text-5xl font-bold mb-6 text-gray-900">
-          Welcome to Capstone Web App
+          Welcome to Machine Failure Predictions Web App
         </h1>
         <p className="text-xl text-gray-600 mb-8">
           A modern web application for exploring and comparing AI models and their performance metrics.
