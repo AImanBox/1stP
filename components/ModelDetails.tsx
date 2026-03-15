@@ -1,4 +1,8 @@
 import { Model } from '@/lib/models';
+import ROCChart from './ROCChart';
+import AdvancedROCChart from './AdvancedROCChart';
+import { rocCurves } from '@/lib/rocData';
+import { advancedRocCurves } from '@/lib/advancedRocData';
 
 interface ModelDetailsProps {
   model: Model | null;
@@ -69,6 +73,62 @@ export default function ModelDetails({ model }: ModelDetailsProps) {
             <ScoreCard label="F1 Score" value={model.f1Score} />
           </div>
         </div>
+
+        {/* ROC-AUC Chart - Advanced Train/Test Comparison */}
+        {(model.id === 'model-1' || 
+          model.id === 'model-2' || 
+          model.id === 'model-3' || 
+          model.id === 'model-4' || 
+          model.id === 'model-5' || 
+          model.id === 'model-6') && (
+          <div className="mb-10">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Advanced ROC Analysis - Train vs Test
+            </h2>
+            <AdvancedROCChart
+              modelName={model.name}
+              trainCurve={
+                model.id === 'model-1'
+                  ? advancedRocCurves.xgboost.train
+                  : model.id === 'model-2'
+                  ? advancedRocCurves.lightgbm.train
+                  : model.id === 'model-3'
+                  ? advancedRocCurves.randomforest.train
+                  : model.id === 'model-4'
+                  ? advancedRocCurves.neuralnetwork.train
+                  : model.id === 'model-5'
+                  ? advancedRocCurves.svm.train
+                  : advancedRocCurves.logisticregression.train
+              }
+              testCurve={
+                model.id === 'model-1'
+                  ? advancedRocCurves.xgboost.test
+                  : model.id === 'model-2'
+                  ? advancedRocCurves.lightgbm.test
+                  : model.id === 'model-3'
+                  ? advancedRocCurves.randomforest.test
+                  : model.id === 'model-4'
+                  ? advancedRocCurves.neuralnetwork.test
+                  : model.id === 'model-5'
+                  ? advancedRocCurves.svm.test
+                  : advancedRocCurves.logisticregression.test
+              }
+              overfitting={
+                model.id === 'model-1'
+                  ? advancedRocCurves.xgboost.overfitting
+                  : model.id === 'model-2'
+                  ? advancedRocCurves.lightgbm.overfitting
+                  : model.id === 'model-3'
+                  ? advancedRocCurves.randomforest.overfitting
+                  : model.id === 'model-4'
+                  ? advancedRocCurves.neuralnetwork.overfitting
+                  : model.id === 'model-5'
+                  ? advancedRocCurves.svm.overfitting
+                  : advancedRocCurves.logisticregression.overfitting
+              }
+            />
+          </div>
+        )}
 
         {/* Explanation */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">

@@ -11,7 +11,7 @@ export default function Home() {
           A modern web application for exploring and comparing AI models and their performance metrics.
         </p>
         <div className="flex gap-4 justify-center">
-          <Link href="/models">
+          <Link href="/getting-started">
             <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
               Get Started
             </button>

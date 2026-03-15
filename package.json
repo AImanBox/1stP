@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@next/swc-win32-x64-msvc": "^15.1.0",
+    "@types/fs-extra": "^11.0.4",
+    "fs-extra": "^11.3.4",
     "next": "^15.1.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "recharts": "^3.8.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
