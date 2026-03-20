@@ -234,6 +234,58 @@ export default function IOOutput() {
                   line: { color: '#3b82f6', width: 4 },
                   hoverinfo: 'skip',
                   showlegend: false
+                },
+                // Origin Label "O"
+                {
+                  x: [10],
+                  y: [31],
+                  z: [22],
+                  mode: 'text',
+                  type: 'scatter3d',
+                  text: ['O'],
+                  textposition: 'top center',
+                  textfont: { size: 16, color: '#000000', family: 'Arial Black' },
+                  hoverinfo: 'skip',
+                  showlegend: false
+                },
+                // X-Axis Label
+                {
+                  x: [145],
+                  y: [31],
+                  z: [22],
+                  mode: 'text',
+                  type: 'scatter3d',
+                  text: ['X (Tool Wear [min])'],
+                  textposition: 'middle center',
+                  textfont: { size: 12, color: '#ef4444', family: 'Arial' },
+                  hoverinfo: 'skip',
+                  showlegend: false
+                },
+                // Y-Axis Label
+                {
+                  x: [10],
+                  y: [44],
+                  z: [22],
+                  mode: 'text',
+                  type: 'scatter3d',
+                  text: ['Y (Process Temp [°C])'],
+                  textposition: 'middle center',
+                  textfont: { size: 12, color: '#22c55e', family: 'Arial' },
+                  hoverinfo: 'skip',
+                  showlegend: false
+                },
+                // Z-Axis Label
+                {
+                  x: [10],
+                  y: [31],
+                  z: [34],
+                  mode: 'text',
+                  type: 'scatter3d',
+                  text: ['Z (Air Temp [°C])'],
+                  textposition: 'middle center',
+                  textfont: { size: 12, color: '#3b82f6', family: 'Arial' },
+                  hoverinfo: 'skip',
+                  showlegend: false
                 }
               ]}
               layout={{
