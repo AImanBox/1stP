@@ -92,7 +92,8 @@ export default function IOOutput() {
         // Side View: Horizontal = X-axis, Vertical = Z-axis (looking from Y direction)
         return { eye: { x: 0, y: 2.5, z: 0 }, center: { x: 0, y: 0, z: 0 } };
       default: // '3d'
-        return { eye: { x: 1.5, y: 1.5, z: 1.5 }, center: { x: 0, y: 0, z: 0 } };
+        // Rotated 45 degrees counter-clockwise from original view
+        return { eye: { x: 0, y: 2.1, z: 1.5 }, center: { x: 0, y: 0, z: 0 } };
     }
   };
 
@@ -198,19 +199,6 @@ export default function IOOutput() {
                     opacity: 0.8,
                     line: { color: '#dc2626', width: 1 }
                   }
-                },
-                // Origin Label "O"
-                {
-                  x: [10],
-                  y: [31],
-                  z: [22],
-                  mode: 'text',
-                  type: 'scatter3d',
-                  text: ['O'],
-                  textposition: 'top center',
-                  textfont: { size: 16, color: '#000000', family: 'Arial Black' },
-                  hoverinfo: 'skip',
-                  showlegend: false
                 },
                 // X-Axis Label
                 {
