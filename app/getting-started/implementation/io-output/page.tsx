@@ -2,12 +2,14 @@
 
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 // Dynamically import Plotly to avoid SSR issues
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 
 export default function IOOutput() {
+  // Camera view state
+  const [cameraView, setCameraView] = useState<'3d' | 'top' | 'front' | 'side'>('3d');
   // Input Features Definition
   const inputFeatures = [
     {
@@ -77,6 +79,20 @@ export default function IOOutput() {
     return noFailureData;
   }, []);
 
+  // Get camera configuration based on selected view
+  const getCameraConfig = () => {
+    switch (cameraView) {
+      case 'top':
+        return { eye: { x: 0, y: 0, z: 2.5 }, center: { x: 0, y: 0, z: 0 } };
+      case 'front':
+        return { eye: { x: 1.5, y: 0, z: 1.5 }, center: { x: 0, y: 0, z: 0 } };
+      case 'side':
+        return { eye: { x: 0, y: 1.5, z: 1.5 }, center: { x: 0, y: 0, z: 0 } };
+      default: // '3d'
+        return { eye: { x: 1.5, y: 1.5, z: 1.5 }, center: { x: 0, y: 0, z: 0 } };
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -104,6 +120,50 @@ export default function IOOutput() {
             <span className="inline-block mr-4">🟢 Green = No Failure</span>
             <span className="inline-block">🔴 Red = Machine Failure</span>
           </p>
+
+          {/* View Control Buttons */}
+          <div className="mb-6 flex gap-3 flex-wrap">
+            <button
+              onClick={() => setCameraView('3d')}
+              className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                cameraView === '3d'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+              }`}
+            >
+              🔄 3D View
+            </button>
+            <button
+              onClick={() => setCameraView('top')}
+              className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                cameraView === 'top'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+              }`}
+            >
+              ⬆️ Top View
+            </button>
+            <button
+              onClick={() => setCameraView('front')}
+              className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                cameraView === 'front'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+              }`}
+            >
+              👁️ Front View
+            </button>
+            <button
+              onClick={() => setCameraView('side')}
+              className={`px-4 py-2 rounded-lg font-semibold transition-all ${
+                cameraView === 'side'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+              }`}
+            >
+              ↔️ Side View
+            </button>
+          </div>
           
           <div style={{ width: '100%', height: '600px' }}>
             <Plot
@@ -169,9 +229,7 @@ export default function IOOutput() {
                     zerolinewidth: 2,
                     zerolinecolor: 'rgba(0, 0, 0, 0.3)',
                   },
-                  camera: {
-                    eye: { x: 1.5, y: 1.5, z: 1.5 }
-                  }
+                  camera: getCameraConfig()
                 },
                 title: {
                   text: '3D Interactive Scatter Plot - Machine Failure Prediction',
