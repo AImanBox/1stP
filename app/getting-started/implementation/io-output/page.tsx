@@ -223,18 +223,6 @@ export default function IOOutput() {
                   hoverinfo: 'skip',
                   showlegend: false
                 },
-                // Z-Axis line (Blue) - Air Temperature
-                {
-                  x: [10, 10],
-                  y: [31, 31],
-                  z: [22, 33],
-                  mode: 'lines',
-                  type: 'scatter3d',
-                  name: 'Z-Axis (Air Temperature)',
-                  line: { color: '#3b82f6', width: 4 },
-                  hoverinfo: 'skip',
-                  showlegend: false
-                },
                 // Origin Label "O"
                 {
                   x: [10],
