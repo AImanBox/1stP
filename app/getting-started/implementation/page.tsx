@@ -104,6 +104,18 @@ export default function Implementation() {
           </div>
         </div>
 
+        {/* Additional Tools */}
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Analysis Tools</h2>
+          <Link href="/getting-started/implementation/io-output">
+            <button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+              <span>📊</span>
+              <span>I/Output</span>
+            </button>
+          </Link>
+          <p className="text-gray-600 text-sm mt-2">View input/output scatter plot and feature analysis</p>
+        </div>
+
         {/* Technology Stack */}
         <div className="bg-green-50 rounded-lg p-8">
           <h2 className="text-2xl font-bold text-green-900 mb-4">Technology Stack</h2>

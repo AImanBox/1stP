@@ -18,9 +18,7 @@ export interface Model {
   description: string;
 }
 
-// Import ROC data
-import { rocCurves } from './rocData';
-
+// ROC data imported in ModelDetails component
 export const models: Model[] = [
   {
     id: 'model-1',

@@ -17,11 +17,11 @@ interface AdvancedROCChartProps {
   modelName: string;
   trainCurve: {
     auc: number;
-    points: Point[];
+    points: readonly Point[];
   };
   testCurve: {
     auc: number;
-    points: Point[];
+    points: readonly Point[];
   };
   overfitting: OverfittingAnalysis;
 }

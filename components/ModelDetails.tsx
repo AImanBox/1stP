@@ -1,7 +1,5 @@
 import { Model } from '@/lib/models';
-import ROCChart from './ROCChart';
 import AdvancedROCChart from './AdvancedROCChart';
-import { rocCurves } from '@/lib/rocData';
 import { advancedRocCurves } from '@/lib/advancedRocData';
 
 interface ModelDetailsProps {

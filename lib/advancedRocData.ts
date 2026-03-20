@@ -375,6 +375,6 @@ export const advancedRocCurves = {
       interpretation: 'Significant overfitting detected. Gap of 7.6% indicates linear model struggles to capture complex patterns. Consider ensemble methods or feature engineering.',
     },
   },
-};
+} as const;
 
 export type ModelKey = keyof typeof advancedRocCurves;
