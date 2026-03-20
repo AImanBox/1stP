@@ -18,17 +18,17 @@ export default function IOOutput() {
       type: 'X-Axis'
     },
     {
-      name: 'Process temperature [K]',
+      name: 'Process temperature [°C]',
       description: 'Operating temperature during the machine process (Y-axis)',
-      unit: 'Kelvin (K)',
-      range: '~305 - 315 K',
+      unit: 'Celsius (°C)',
+      range: '~31 - 42 °C',
       type: 'Y-Axis'
     },
     {
-      name: 'Air temperature [K]',
+      name: 'Air temperature [°C]',
       description: 'Temperature of the ambient air surrounding the machine (Z-axis)',
-      unit: 'Kelvin (K)',
-      range: '~295 - 305 K',
+      unit: 'Celsius (°C)',
+      range: '~22 - 32 °C',
       type: 'Z-Axis'
     },
     {
@@ -48,30 +48,31 @@ export default function IOOutput() {
   ];
 
   // Generate 3D scatter plot data - Tool Wear vs Process Temp vs Air Temp vs Failure
+  // Convert Kelvin to Celsius: °C = K - 273.15
   const scatter3DData = useMemo(() => {
     const noFailureData = [
-      { x: 10, y: 305, z: 298, failure: 0 },
-      { x: 25, y: 308, z: 300, failure: 0 },
-      { x: 30, y: 303, z: 299, failure: 0 },
-      { x: 15, y: 300, z: 297, failure: 0 },
-      { x: 35, y: 302, z: 301, failure: 0 },
-      { x: 5, y: 298, z: 295, failure: 0 },
-      { x: 38, y: 304, z: 302, failure: 0 },
-      { x: 12, y: 299, z: 296, failure: 0 },
-      { x: 42, y: 306, z: 303, failure: 0 },
-      { x: 8, y: 297, z: 294, failure: 0 },
-      { x: 20, y: 301, z: 298, failure: 0 },
-      { x: 28, y: 307, z: 304, failure: 0 },
-      { x: 45, y: 310, z: 305, failure: 1 },
-      { x: 85, y: 312, z: 303, failure: 1 },
-      { x: 120, y: 315, z: 304, failure: 1 },
-      { x: 95, y: 311, z: 302, failure: 1 },
-      { x: 110, y: 314, z: 305, failure: 1 },
-      { x: 70, y: 309, z: 301, failure: 1 },
-      { x: 88, y: 311, z: 302, failure: 1 },
-      { x: 100, y: 313, z: 304, failure: 1 },
-      { x: 78, y: 310, z: 303, failure: 1 },
-      { x: 130, y: 316, z: 305, failure: 1 },
+      { x: 10, y: 305 - 273.15, z: 298 - 273.15, failure: 0 },
+      { x: 25, y: 308 - 273.15, z: 300 - 273.15, failure: 0 },
+      { x: 30, y: 303 - 273.15, z: 299 - 273.15, failure: 0 },
+      { x: 15, y: 300 - 273.15, z: 297 - 273.15, failure: 0 },
+      { x: 35, y: 302 - 273.15, z: 301 - 273.15, failure: 0 },
+      { x: 5, y: 298 - 273.15, z: 295 - 273.15, failure: 0 },
+      { x: 38, y: 304 - 273.15, z: 302 - 273.15, failure: 0 },
+      { x: 12, y: 299 - 273.15, z: 296 - 273.15, failure: 0 },
+      { x: 42, y: 306 - 273.15, z: 303 - 273.15, failure: 0 },
+      { x: 8, y: 297 - 273.15, z: 294 - 273.15, failure: 0 },
+      { x: 20, y: 301 - 273.15, z: 298 - 273.15, failure: 0 },
+      { x: 28, y: 307 - 273.15, z: 304 - 273.15, failure: 0 },
+      { x: 45, y: 310 - 273.15, z: 305 - 273.15, failure: 1 },
+      { x: 85, y: 312 - 273.15, z: 303 - 273.15, failure: 1 },
+      { x: 120, y: 315 - 273.15, z: 304 - 273.15, failure: 1 },
+      { x: 95, y: 311 - 273.15, z: 302 - 273.15, failure: 1 },
+      { x: 110, y: 314 - 273.15, z: 305 - 273.15, failure: 1 },
+      { x: 70, y: 309 - 273.15, z: 301 - 273.15, failure: 1 },
+      { x: 88, y: 311 - 273.15, z: 302 - 273.15, failure: 1 },
+      { x: 100, y: 313 - 273.15, z: 304 - 273.15, failure: 1 },
+      { x: 78, y: 310 - 273.15, z: 303 - 273.15, failure: 1 },
+      { x: 130, y: 316 - 273.15, z: 305 - 273.15, failure: 1 },
     ];
     return noFailureData;
   }, []);
@@ -96,8 +97,8 @@ export default function IOOutput() {
           <h2 className="text-2xl font-bold text-gray-900 mb-2">3D Feature Analysis: Tool Wear, Process Temperature & Air Temperature</h2>
           <p className="text-gray-600 mb-4">
             <span className="inline-block mr-6">📌 <strong>X-Axis:</strong> Tool wear [min]</span>
-            <span className="inline-block mr-6">📌 <strong>Y-Axis:</strong> Process temperature [K]</span>
-            <span className="inline-block mr-6">📌 <strong>Z-Axis:</strong> Air temperature [K]</span>
+            <span className="inline-block mr-6">📌 <strong>Y-Axis:</strong> Process temperature [°C]</span>
+            <span className="inline-block mr-6">📌 <strong>Z-Axis:</strong> Air temperature [°C]</span>
           </p>
           <p className="text-gray-600 mb-6">
             <span className="inline-block mr-4">🟢 Green = No Failure</span>
@@ -141,20 +142,32 @@ export default function IOOutput() {
                   xaxis: {
                     title: 'Tool Wear [min]',
                     backgroundcolor: 'rgba(230, 230,230, 0.5)',
-                    gridcolor: 'white',
+                    gridcolor: 'rgba(200, 200, 200, 0.8)',
                     showbackground: true,
+                    showgrid: true,
+                    zeroline: true,
+                    zerolinewidth: 2,
+                    zerolinecolor: 'rgba(0, 0, 0, 0.3)',
                   },
                   yaxis: {
-                    title: 'Process Temperature [K]',
+                    title: 'Process Temperature [°C]',
                     backgroundcolor: 'rgba(230, 230,230, 0.5)',
-                    gridcolor: 'white',
+                    gridcolor: 'rgba(200, 200, 200, 0.8)',
                     showbackground: true,
+                    showgrid: true,
+                    zeroline: true,
+                    zerolinewidth: 2,
+                    zerolinecolor: 'rgba(0, 0, 0, 0.3)',
                   },
                   zaxis: {
-                    title: 'Air Temperature [K]',
+                    title: 'Air Temperature [°C]',
                     backgroundcolor: 'rgba(230, 230,230, 0.5)',
-                    gridcolor: 'white',
+                    gridcolor: 'rgba(200, 200, 200, 0.8)',
                     showbackground: true,
+                    showgrid: true,
+                    zeroline: true,
+                    zerolinewidth: 2,
+                    zerolinecolor: 'rgba(0, 0, 0, 0.3)',
                   },
                   camera: {
                     eye: { x: 1.5, y: 1.5, z: 1.5 }
