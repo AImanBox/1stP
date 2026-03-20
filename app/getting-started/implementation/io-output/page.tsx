@@ -1,66 +1,80 @@
 ﻿'use client';
 
 import Link from 'next/link';
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import dynamic from 'next/dynamic';
+import { useMemo } from 'react';
+
+// Dynamically import Plotly to avoid SSR issues
+const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 
 export default function IOOutput() {
   // Input Features Definition
   const inputFeatures = [
     {
-      name: 'Air temperature [K]',
-      description: 'Temperature of the ambient air surrounding the machine',
-      unit: 'Kelvin (K)',
-      range: '~295 - 305 K'
+      name: 'Tool wear [min]',
+      description: 'Cumulative wear time of the cutting tool (X-axis)',
+      unit: 'Minutes (min)',
+      range: '~0 - 250 min',
+      type: 'X-Axis'
     },
     {
       name: 'Process temperature [K]',
-      description: 'Operating temperature during the machine process',
+      description: 'Operating temperature during the machine process (Y-axis)',
       unit: 'Kelvin (K)',
-      range: '~305 - 315 K'
+      range: '~305 - 315 K',
+      type: 'Y-Axis'
+    },
+    {
+      name: 'Air temperature [K]',
+      description: 'Temperature of the ambient air surrounding the machine (Z-axis)',
+      unit: 'Kelvin (K)',
+      range: '~295 - 305 K',
+      type: 'Z-Axis'
     },
     {
       name: 'Rotational speed [rpm]',
       description: 'Speed at which the machine spindle rotates',
       unit: 'Revolutions per minute (rpm)',
-      range: '~1200 - 2800 rpm'
+      range: '~1200 - 2800 rpm',
+      type: undefined
     },
     {
       name: 'Torque [Nm]',
       description: 'Rotating force applied by the machine',
       unit: 'Newton-meters (Nm)',
-      range: '~4 - 76 Nm'
-    },
-    {
-      name: 'Tool wear [min]',
-      description: 'Cumulative wear time of the cutting tool',
-      unit: 'Minutes (min)',
-      range: '~0 - 250 min'
+      range: '~4 - 76 Nm',
+      type: undefined
     }
   ];
 
-  // Sample scatter plot data - Temperature vs Tool Wear vs Failure
-  const scatterData = [
-    { x: 305, y: 10, failure: 0 },
-    { x: 308, y: 25, failure: 0 },
-    { x: 310, y: 45, failure: 1 },
-    { x: 312, y: 85, failure: 1 },
-    { x: 298, y: 5, failure: 0 },
-    { x: 315, y: 120, failure: 1 },
-    { x: 303, y: 30, failure: 0 },
-    { x: 311, y: 95, failure: 1 },
-    { x: 300, y: 15, failure: 0 },
-    { x: 314, y: 110, failure: 1 },
-    { x: 302, y: 35, failure: 0 },
-    { x: 309, y: 70, failure: 1 },
-    { x: 297, y: 8, failure: 0 },
-    { x: 313, y: 100, failure: 1 },
-    { x: 306, y: 42, failure: 0 },
-    { x: 311, y: 88, failure: 1 },
-    { x: 299, y: 12, failure: 0 },
-    { x: 316, y: 130, failure: 1 },
-    { x: 304, y: 38, failure: 0 },
-    { x: 310, y: 78, failure: 1 },
-  ];
+  // Generate 3D scatter plot data - Tool Wear vs Process Temp vs Air Temp vs Failure
+  const scatter3DData = useMemo(() => {
+    const noFailureData = [
+      { x: 10, y: 305, z: 298, failure: 0 },
+      { x: 25, y: 308, z: 300, failure: 0 },
+      { x: 30, y: 303, z: 299, failure: 0 },
+      { x: 15, y: 300, z: 297, failure: 0 },
+      { x: 35, y: 302, z: 301, failure: 0 },
+      { x: 5, y: 298, z: 295, failure: 0 },
+      { x: 38, y: 304, z: 302, failure: 0 },
+      { x: 12, y: 299, z: 296, failure: 0 },
+      { x: 42, y: 306, z: 303, failure: 0 },
+      { x: 8, y: 297, z: 294, failure: 0 },
+      { x: 20, y: 301, z: 298, failure: 0 },
+      { x: 28, y: 307, z: 304, failure: 0 },
+      { x: 45, y: 310, z: 305, failure: 1 },
+      { x: 85, y: 312, z: 303, failure: 1 },
+      { x: 120, y: 315, z: 304, failure: 1 },
+      { x: 95, y: 311, z: 302, failure: 1 },
+      { x: 110, y: 314, z: 305, failure: 1 },
+      { x: 70, y: 309, z: 301, failure: 1 },
+      { x: 88, y: 311, z: 302, failure: 1 },
+      { x: 100, y: 313, z: 304, failure: 1 },
+      { x: 78, y: 310, z: 303, failure: 1 },
+      { x: 130, y: 316, z: 305, failure: 1 },
+    ];
+    return noFailureData;
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -77,50 +91,129 @@ export default function IOOutput() {
 
       {/* Content */}
       <div className="max-w-6xl mx-auto px-6 py-12">
-        {/* Scatter Plot */}
+        {/* 3D Scatter Plot */}
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Feature Scatter Plot: Process Temperature vs Tool Wear</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">3D Feature Analysis: Tool Wear, Process Temperature & Air Temperature</h2>
           <p className="text-gray-600 mb-4">
-            <span className="inline-block mr-4">🟢 Green = No Failure (Class 0)</span>
-            <span className="inline-block">🔴 Red = Machine Failure (Class 1)</span>
+            <span className="inline-block mr-6">📌 <strong>X-Axis:</strong> Tool wear [min]</span>
+            <span className="inline-block mr-6">📌 <strong>Y-Axis:</strong> Process temperature [K]</span>
+            <span className="inline-block mr-6">📌 <strong>Z-Axis:</strong> Air temperature [K]</span>
           </p>
-          <ResponsiveContainer width="100%" height={400}>
-            <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="x" label={{ value: 'Process Temperature [K]', position: 'insideBottomRight', offset: -10 }} />
-              <YAxis label={{ value: 'Tool Wear [min]', angle: -90, position: 'insideLeft' }} />
-              <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-              <Scatter
-                name="No Failure"
-                data={scatterData.filter(d => d.failure === 0)}
-                fill="#22c55e"
-                shape="circle"
-              />
-              <Scatter
-                name="Machine Failure"
-                data={scatterData.filter(d => d.failure === 1)}
-                fill="#ef4444"
-                shape="circle"
-              />
-              <Legend />
-            </ScatterChart>
-          </ResponsiveContainer>
+          <p className="text-gray-600 mb-6">
+            <span className="inline-block mr-4">🟢 Green = No Failure</span>
+            <span className="inline-block">🔴 Red = Machine Failure</span>
+          </p>
+          
+          <div style={{ width: '100%', height: '600px' }}>
+            <Plot
+              data={[
+                {
+                  x: scatter3DData.filter(d => d.failure === 0).map(d => d.x),
+                  y: scatter3DData.filter(d => d.failure === 0).map(d => d.y),
+                  z: scatter3DData.filter(d => d.failure === 0).map(d => d.z),
+                  mode: 'markers',
+                  type: 'scatter3d',
+                  name: 'No Failure',
+                  marker: {
+                    size: 6,
+                    color: '#22c55e',
+                    opacity: 0.8,
+                    line: { color: '#16a34a', width: 1 }
+                  }
+                },
+                {
+                  x: scatter3DData.filter(d => d.failure === 1).map(d => d.x),
+                  y: scatter3DData.filter(d => d.failure === 1).map(d => d.y),
+                  z: scatter3DData.filter(d => d.failure === 1).map(d => d.z),
+                  mode: 'markers',
+                  type: 'scatter3d',
+                  name: 'Machine Failure',
+                  marker: {
+                    size: 6,
+                    color: '#ef4444',
+                    opacity: 0.8,
+                    line: { color: '#dc2626', width: 1 }
+                  }
+                }
+              ]}
+              layout={{
+                scene: {
+                  xaxis: {
+                    title: 'Tool Wear [min]',
+                    backgroundcolor: 'rgba(230, 230,230, 0.5)',
+                    gridcolor: 'white',
+                    showbackground: true,
+                  },
+                  yaxis: {
+                    title: 'Process Temperature [K]',
+                    backgroundcolor: 'rgba(230, 230,230, 0.5)',
+                    gridcolor: 'white',
+                    showbackground: true,
+                  },
+                  zaxis: {
+                    title: 'Air Temperature [K]',
+                    backgroundcolor: 'rgba(230, 230,230, 0.5)',
+                    gridcolor: 'white',
+                    showbackground: true,
+                  },
+                  camera: {
+                    eye: { x: 1.5, y: 1.5, z: 1.5 }
+                  }
+                },
+                title: {
+                  text: '3D Interactive Scatter Plot - Machine Failure Prediction',
+                  font: { size: 14, color: '#1f2937' }
+                },
+                hovermode: 'closest',
+                margin: { l: 0, r: 0, b: 0, t: 30 },
+                paper_bgcolor: 'rgba(255,255,255,0)',
+                plot_bgcolor: 'rgba(255,255,255,0)'
+              }}
+              config={{ responsive: true }}
+              style={{ width: '100%', height: '100%' }}
+            />
+          </div>
+          
+          <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+            <p className="text-sm text-gray-700">
+              💡 <strong>Tip:</strong> You can rotate the plot by clicking and dragging, zoom using scroll wheel, and hover over points to see exact values. 
+              Notice how higher tool wear and process temperature values tend to cluster with machine failures (red points).
+            </p>
+          </div>
         </div>
 
         {/* Input Features List */}
         <div className="bg-white rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Input Features</h2>
+          <div className="mb-4 p-4 bg-amber-50 rounded border-l-4 border-amber-500">
+            <p className="text-sm text-amber-900">
+              <strong>📍 3D Plot Dimensions:</strong> The scatter plot above shows the top 3 most important features:
+              <span className="inline-block ml-2 font-semibold">Tool Wear (X)</span>,
+              <span className="inline-block ml-2 font-semibold">Process Temperature (Y)</span>, and
+              <span className="inline-block ml-2 font-semibold">Air Temperature (Z)</span>
+            </p>
+          </div>
           <div className="space-y-4">
-            {inputFeatures.map((feature, idx) => (
-              <div key={idx} className="border-l-4 border-blue-500 pl-4 py-2">
-                <h3 className="text-lg font-semibold text-gray-900">{idx + 1}. {feature.name}</h3>
-                <p className="text-gray-700 mt-1">{feature.description}</p>
-                <div className="mt-2 flex gap-6 text-sm text-gray-600">
-                  <span><strong>Unit:</strong> {feature.unit}</span>
-                  <span><strong>Typical Range:</strong> {feature.range}</span>
+            {inputFeatures.map((feature, idx) => {
+              const is3DAxis = feature.type && ['X-Axis', 'Y-Axis', 'Z-Axis'].includes(feature.type);
+              return (
+                <div key={idx} className={`border-l-4 pl-4 py-2 ${is3DAxis ? 'border-purple-500 bg-purple-50' : 'border-blue-500'}`}>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-semibold text-gray-900">{idx + 1}. {feature.name}</h3>
+                    {is3DAxis && (
+                      <span className="inline-block px-2 py-1 text-xs font-bold rounded-full bg-purple-500 text-white">
+                        {feature.type}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-gray-700 mt-1">{feature.description}</p>
+                  <div className="mt-2 flex gap-6 text-sm text-gray-600">
+                    <span><strong>Unit:</strong> {feature.unit}</span>
+                    <span><strong>Typical Range:</strong> {feature.range}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 

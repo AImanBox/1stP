@@ -1,0 +1,15 @@
+﻿declare module 'react-plotly.js' {
+  import React from 'react';
+  
+  interface PlotProps {
+    data?: any[];
+    layout?: any;
+    config?: any;
+    style?: React.CSSProperties;
+    className?: string;
+    [key: string]: any;
+  }
+  
+  const Plot: React.FC<PlotProps>;
+  export = Plot;
+}
