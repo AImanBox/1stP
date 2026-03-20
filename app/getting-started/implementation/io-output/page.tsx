@@ -83,11 +83,14 @@ export default function IOOutput() {
   const getCameraConfig = () => {
     switch (cameraView) {
       case 'top':
+        // Top View: Vertical = X-axis, Horizontal = Y-axis (looking down from Z)
         return { eye: { x: 0, y: 0, z: 2.5 }, center: { x: 0, y: 0, z: 0 } };
       case 'front':
-        return { eye: { x: 1.5, y: 0, z: 1.5 }, center: { x: 0, y: 0, z: 0 } };
+        // Front View: Vertical = Z-axis, Horizontal = Y-axis (looking from X direction)
+        return { eye: { x: 2.5, y: 0, z: 0 }, center: { x: 0, y: 0, z: 0 } };
       case 'side':
-        return { eye: { x: 0, y: 1.5, z: 1.5 }, center: { x: 0, y: 0, z: 0 } };
+        // Side View: Horizontal = X-axis, Vertical = Z-axis (looking from Y direction)
+        return { eye: { x: 0, y: 2.5, z: 0 }, center: { x: 0, y: 0, z: 0 } };
       default: // '3d'
         return { eye: { x: 1.5, y: 1.5, z: 1.5 }, center: { x: 0, y: 0, z: 0 } };
     }
