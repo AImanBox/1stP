@@ -198,6 +198,42 @@ export default function IOOutput() {
                     opacity: 0.8,
                     line: { color: '#dc2626', width: 1 }
                   }
+                },
+                // X-Axis line (Red) - Tool Wear
+                {
+                  x: [0, 140],
+                  y: [31, 31],
+                  z: [22, 22],
+                  mode: 'lines',
+                  type: 'scatter3d',
+                  name: 'X-Axis (Tool Wear)',
+                  line: { color: '#ef4444', width: 4 },
+                  hoverinfo: 'skip',
+                  showlegend: false
+                },
+                // Y-Axis line (Green) - Process Temperature
+                {
+                  x: [10, 10],
+                  y: [31, 43],
+                  z: [22, 22],
+                  mode: 'lines',
+                  type: 'scatter3d',
+                  name: 'Y-Axis (Process Temperature)',
+                  line: { color: '#22c55e', width: 4 },
+                  hoverinfo: 'skip',
+                  showlegend: false
+                },
+                // Z-Axis line (Blue) - Air Temperature
+                {
+                  x: [10, 10],
+                  y: [31, 31],
+                  z: [22, 33],
+                  mode: 'lines',
+                  type: 'scatter3d',
+                  name: 'Z-Axis (Air Temperature)',
+                  line: { color: '#3b82f6', width: 4 },
+                  hoverinfo: 'skip',
+                  showlegend: false
                 }
               ]}
               layout={{
