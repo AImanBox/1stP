@@ -293,8 +293,8 @@ export default function IOOutput() {
                   xaxis: {
                     title: 'Tool Wear [min]',
                     backgroundcolor: 'rgba(230, 230,230, 0.5)',
-                    gridcolor: 'rgba(150, 150, 150, 0.6)',
-                    gridwidth: 2,
+                    gridcolor: 'rgba(100, 100, 100, 1)',
+                    gridwidth: 3,
                     dtick: 30,
                     showbackground: true,
                     showgrid: true,
@@ -305,8 +305,8 @@ export default function IOOutput() {
                   yaxis: {
                     title: 'Process Temperature [°C]',
                     backgroundcolor: 'rgba(230, 230,230, 0.5)',
-                    gridcolor: 'rgba(150, 150, 150, 0.6)',
-                    gridwidth: 2,
+                    gridcolor: 'rgba(100, 100, 100, 1)',
+                    gridwidth: 3,
                     dtick: 3,
                     showbackground: true,
                     showgrid: true,
@@ -317,8 +317,8 @@ export default function IOOutput() {
                   zaxis: {
                     title: 'Air Temperature [°C]',
                     backgroundcolor: 'rgba(230, 230,230, 0.5)',
-                    gridcolor: 'rgba(150, 150, 150, 0.6)',
-                    gridwidth: 2,
+                    gridcolor: 'rgba(100, 100, 100, 1)',
+                    gridwidth: 3,
                     dtick: 2,
                     showbackground: true,
                     showgrid: true,
