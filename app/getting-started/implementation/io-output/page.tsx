@@ -199,45 +199,6 @@ export default function IOOutput() {
                     opacity: 0.8,
                     line: { color: '#dc2626', width: 1 }
                   }
-                },
-                // X-Axis Label
-                {
-                  x: [145],
-                  y: [31],
-                  z: [22],
-                  mode: 'text',
-                  type: 'scatter3d',
-                  text: ['X (Tool Wear [min])'],
-                  textposition: 'middle center',
-                  textfont: { size: 12, color: '#ef4444', family: 'Arial' },
-                  hoverinfo: 'skip',
-                  showlegend: false
-                },
-                // Y-Axis Label
-                {
-                  x: [10],
-                  y: [44],
-                  z: [22],
-                  mode: 'text',
-                  type: 'scatter3d',
-                  text: ['Y (Process Temp [°C])'],
-                  textposition: 'middle center',
-                  textfont: { size: 12, color: '#22c55e', family: 'Arial' },
-                  hoverinfo: 'skip',
-                  showlegend: false
-                },
-                // Z-Axis Label
-                {
-                  x: [10],
-                  y: [31],
-                  z: [34],
-                  mode: 'text',
-                  type: 'scatter3d',
-                  text: ['Z (Air Temp [°C])'],
-                  textposition: 'middle center',
-                  textfont: { size: 12, color: '#3b82f6', family: 'Arial' },
-                  hoverinfo: 'skip',
-                  showlegend: false
                 }
               ]}
               layout={{
