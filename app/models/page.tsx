@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import { models } from '@/lib/models';
 import ModelSidebar from '@/components/ModelSidebar';
@@ -13,13 +14,21 @@ export default function ModelsPage() {
   const selectedModel = models.find((m) => m.id === selectedModelId) || null;
 
   return (
-    <div className="flex h-screen bg-white">
+    <div className="flex flex-col h-screen bg-white">
+      <div className="bg-blue-600 text-white px-6 py-3">
+        <Link href="/getting-started" className="inline-flex items-center hover:text-blue-100 transition">
+          <span className="mr-2">←</span>
+          <span className="font-semibold">Back to Getting Started</span>
+        </Link>
+      </div>
+      <div className="flex flex-1 bg-white">
       <ModelSidebar
         models={models}
         selectedModelId={selectedModelId}
         onSelectModel={setSelectedModelId}
       />
       <ModelDetails model={selectedModel} />
+      </div>
     </div>
   );
 }
