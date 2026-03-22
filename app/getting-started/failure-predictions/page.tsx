@@ -353,46 +353,6 @@ export default function FailurePredictions() {
               </div>
             </div>
           </div>
-
-          {/* Top Critical Machines Alert */}
-          <div className="mt-8 bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Critical Machines (First 15)</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-gray-100 border-b-2 border-gray-300">
-                  <tr>
-                    <th className="px-4 py-2 text-left text-gray-700">Machine ID</th>
-                    <th className="px-4 py-2 text-left text-gray-700">Prob.</th>
-                    <th className="px-4 py-2 text-left text-gray-700">Risk Level</th>
-                    <th className="px-4 py-2 text-left text-gray-700">Tool Wear</th>
-                    <th className="px-4 py-2 text-left text-gray-700">Action Required</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {criticalItems.slice(0, 15).map((item, idx) => (
-                    <tr key={idx} className="border-b hover:bg-gray-50">
-                      <td className="px-4 py-2 font-mono text-gray-900">UDI-{item.UDI}</td>
-                      <td className="px-4 py-2">
-                        <span className="px-2 py-1 bg-red-100 text-red-800 rounded text-xs font-semibold">
-                          {item.probability.toFixed(2)}
-                        </span>
-                      </td>
-                      <td className="px-4 py-2">
-                        <span className="px-2 py-1 bg-red-200 text-red-900 rounded text-xs font-semibold">
-                          {item.risk_level}
-                        </span>
-                      </td>
-                      <td className="px-4 py-2 text-gray-700">{item.tool_wear} min</td>
-                      <td className="px-4 py-2 text-red-600 font-semibold">🔧 Maintenance</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p className="text-xs text-gray-600 mt-3">
-              Showing {Math.min(15, criticalItems.length)} of {criticalItems.length} critical machines
-            </p>
-          </div>
         </div>
 
         {/* ===== ITEM 3: BUSINESS INTELLIGENCE ANALYTICS ===== */}
