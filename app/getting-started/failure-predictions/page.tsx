@@ -181,51 +181,218 @@ export default function FailurePredictions() {
           </div>
         </div>
 
-        {/* ===== ITEM 2: REAL-TIME FAILURE ALERTS ===== */}
+        {/* ===== ITEM 2: PROBABILITY DISTRIBUTION & SUMMARY ALERTS ===== */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">⚠️ 2. Real-Time Failure Alerts</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">📊 2. Probability Distribution & Summary</h2>
           
-          <div className="bg-red-50 rounded-lg shadow p-6 mb-6 border-l-4 border-red-600">
-            <h3 className="text-lg font-semibold text-red-900 mb-2">Critical Machines Requiring Attention</h3>
-            <p className="text-red-800">{criticalItems.length} machines predicted to fail - Immediate maintenance recommended</p>
+          {/* Alert Banner */}
+          <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-lg shadow p-6 mb-6 border-l-4 border-red-600">
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <svg className="h-6 w-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-4">
+                <h3 className="text-lg font-semibold text-red-900">Critical Machines Requiring Immediate Attention</h3>
+                <p className="text-red-800 mt-1">{criticalItems.length} machines predicted to fail out of {predictions.total_records.toLocaleString()}</p>
+              </div>
+            </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full bg-white rounded-lg shadow">
-              <thead className="bg-red-100 border-b-2 border-red-600">
-                <tr>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-red-900">Machine ID</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-red-900">Tool Wear (min)</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-red-900">Process Temp (°C)</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-red-900">Air Temp (°C)</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-red-900">Failure Prob.</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-red-900">Risk Level</th>
-                </tr>
-              </thead>
-              <tbody>
-                {criticalItems.slice(0, 20).map((item, idx) => (
-                  <tr key={idx} className="border-b hover:bg-red-50 transition">
-                    <td className="px-6 py-3 text-sm font-mono text-gray-900">UDI-{item.UDI}</td>
-                    <td className="px-6 py-3 text-sm text-gray-700">{item.tool_wear}</td>
-                    <td className="px-6 py-3 text-sm text-gray-700">{item.process_temp_c.toFixed(1)}</td>
-                    <td className="px-6 py-3 text-sm text-gray-700">{item.air_temp_c.toFixed(1)}</td>
-                    <td className="px-6 py-3 text-sm">
-                      <span className="font-semibold text-red-600">{item.probability.toFixed(2)}</span>
-                    </td>
-                    <td className="px-6 py-3 text-sm">
-                      <span className="px-3 py-1 bg-red-200 text-red-800 rounded font-semibold text-xs">
-                        {item.risk_level}
-                      </span>
-                    </td>
+          {/* Summary Metrics Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+            {/* Critical Count */}
+            <div className="bg-red-50 rounded-lg p-4 border-l-4 border-red-600">
+              <p className="text-xs font-semibold text-red-600 uppercase tracking-wide">Critical Risk</p>
+              <p className="text-2xl font-bold text-red-700 mt-2">{criticalItems.length}</p>
+              <p className="text-xs text-red-600 mt-1">Prob ≥ 0.50</p>
+            </div>
+
+            {/* Mean Probability */}
+            <div className="bg-yellow-50 rounded-lg p-4 border-l-4 border-yellow-600">
+              <p className="text-xs font-semibold text-yellow-600 uppercase tracking-wide">Mean Probability</p>
+              <p className="text-2xl font-bold text-yellow-700 mt-2">{predictions.probability_stats.mean.toFixed(4)}</p>
+              <p className="text-xs text-yellow-600 mt-1">Average failure prob</p>
+            </div>
+
+            {/* Median Probability */}
+            <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
+              <p className="text-xs font-semibold text-blue-600 uppercase tracking-wide">Median Probability</p>
+              <p className="text-2xl font-bold text-blue-700 mt-2">{predictions.probability_stats.median.toFixed(4)}</p>
+              <p className="text-xs text-blue-600 mt-1">Middle value</p>
+            </div>
+
+            {/* Std Deviation */}
+            <div className="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-600">
+              <p className="text-xs font-semibold text-purple-600 uppercase tracking-wide">Std Deviation</p>
+              <p className="text-2xl font-bold text-purple-700 mt-2">{predictions.probability_stats.std.toFixed(4)}</p>
+              <p className="text-xs text-purple-600 mt-1">Variability</p>
+            </div>
+
+            {/* Range */}
+            <div className="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
+              <p className="text-xs font-semibold text-green-600 uppercase tracking-wide">Probability Range</p>
+              <p className="text-sm font-bold text-green-700 mt-2">
+                {predictions.probability_stats.min.toFixed(2)} - {predictions.probability_stats.max.toFixed(2)}
+              </p>
+              <p className="text-xs text-green-600 mt-1">Min to Max</p>
+            </div>
+          </div>
+
+          {/* Risk Category Summary */}
+          <div className="bg-white rounded-lg shadow p-6 mb-8">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Risk Category Breakdown</h3>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+              {[
+                { name: 'Critical', color: 'bg-red-100 text-red-900', icon: '🔴', key: 'Critical' },
+                { name: 'High', color: 'bg-orange-100 text-orange-900', icon: '🟠', key: 'High' },
+                { name: 'Medium', color: 'bg-yellow-100 text-yellow-900', icon: '🟡', key: 'Medium' },
+                { name: 'Low', color: 'bg-blue-100 text-blue-900', icon: '🔵', key: 'Low' },
+                { name: 'Very Low', color: 'bg-green-100 text-green-900', icon: '🟢', key: 'Very Low' },
+              ].map((risk) => (
+                <div key={risk.key} className={`rounded-lg p-4 ${risk.color} text-center`}>
+                  <p className="text-2xl mb-1">{risk.icon}</p>
+                  <p className="text-sm font-semibold">{risk.name}</p>
+                  <p className="text-lg font-bold mt-2">{predictions.risk_distribution[risk.key] || 0}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Probability Thresholds Explanation */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Thresholds Table */}
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Alert Thresholds</h3>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between p-3 bg-red-50 rounded border-l-4 border-red-600">
+                  <span className="font-semibold text-red-900">🔴 Critical</span>
+                  <span className="text-right">
+                    <p className="text-sm font-mono text-red-700">≥ 0.95</p>
+                    <p className="text-xs text-red-600">Immediate action</p>
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-orange-50 rounded border-l-4 border-orange-600">
+                  <span className="font-semibold text-orange-900">🟠 High</span>
+                  <span className="text-right">
+                    <p className="text-sm font-mono text-orange-700">0.70 - 0.95</p>
+                    <p className="text-xs text-orange-600">This week</p>
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-yellow-50 rounded border-l-4 border-yellow-600">
+                  <span className="font-semibold text-yellow-900">🟡 Medium</span>
+                  <span className="text-right">
+                    <p className="text-sm font-mono text-yellow-700">0.50 - 0.70</p>
+                    <p className="text-xs text-yellow-600">Plan soon</p>
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-blue-50 rounded border-l-4 border-blue-600">
+                  <span className="font-semibold text-blue-900">🔵 Low</span>
+                  <span className="text-right">
+                    <p className="text-sm font-mono text-blue-700">0.10 - 0.50</p>
+                    <p className="text-xs text-blue-600">Monitor</p>
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-green-50 rounded border-l-4 border-green-600">
+                  <span className="font-semibold text-green-900">🟢 Very Low</span>
+                  <span className="text-right">
+                    <p className="text-sm font-mono text-green-700">{'<'} 0.10</p>
+                    <p className="text-xs text-green-600">Normal ops</p>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Quartile Analysis */}
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Probability Quartiles</h3>
+              <div className="space-y-4">
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium text-gray-700">0% - 25%</span>
+                    <span className="text-sm font-semibold text-gray-900">Q1: {predictions.probability_stats.q25?.toFixed(4) || 'N/A'}</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-blue-400 h-2 rounded-full" style={{ width: '25%' }}></div>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium text-gray-700">25% - 50%</span>
+                    <span className="text-sm font-semibold text-gray-900">Median: {predictions.probability_stats.median.toFixed(4)}</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-green-400 h-2 rounded-full" style={{ width: '25%' }}></div>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium text-gray-700">50% - 75%</span>
+                    <span className="text-sm font-semibold text-gray-900">Q3: {predictions.probability_stats.q75?.toFixed(4) || 'N/A'}</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-yellow-400 h-2 rounded-full" style={{ width: '25%' }}></div>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium text-gray-700">75% - 100%</span>
+                    <span className="text-sm font-semibold text-gray-900">Max: {predictions.probability_stats.max.toFixed(4)}</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-red-400 h-2 rounded-full" style={{ width: '25%' }}></div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4 p-4 bg-blue-50 rounded border-l-2 border-blue-600">
+                <p className="text-sm text-blue-900">
+                  <strong>Interpretation:</strong> The data is heavily skewed toward low probabilities, with most machines having minimal failure risk. Only a small portion exceeds critical thresholds.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Top Critical Machines Alert */}
+          <div className="mt-8 bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Critical Machines (First 15)</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-100 border-b-2 border-gray-300">
+                  <tr>
+                    <th className="px-4 py-2 text-left text-gray-700">Machine ID</th>
+                    <th className="px-4 py-2 text-left text-gray-700">Prob.</th>
+                    <th className="px-4 py-2 text-left text-gray-700">Risk Level</th>
+                    <th className="px-4 py-2 text-left text-gray-700">Tool Wear</th>
+                    <th className="px-4 py-2 text-left text-gray-700">Action Required</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {criticalItems.slice(0, 15).map((item, idx) => (
+                    <tr key={idx} className="border-b hover:bg-gray-50">
+                      <td className="px-4 py-2 font-mono text-gray-900">UDI-{item.UDI}</td>
+                      <td className="px-4 py-2">
+                        <span className="px-2 py-1 bg-red-100 text-red-800 rounded text-xs font-semibold">
+                          {item.probability.toFixed(2)}
+                        </span>
+                      </td>
+                      <td className="px-4 py-2">
+                        <span className="px-2 py-1 bg-red-200 text-red-900 rounded text-xs font-semibold">
+                          {item.risk_level}
+                        </span>
+                      </td>
+                      <td className="px-4 py-2 text-gray-700">{item.tool_wear} min</td>
+                      <td className="px-4 py-2 text-red-600 font-semibold">🔧 Maintenance</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-gray-600 mt-3">
+              Showing {Math.min(15, criticalItems.length)} of {criticalItems.length} critical machines
+            </p>
           </div>
-
-          <p className="text-sm text-gray-600 mt-4">
-            Showing top {Math.min(20, criticalItems.length)} of {criticalItems.length} critical predictions
-          </p>
         </div>
 
         {/* ===== ITEM 3: BUSINESS INTELLIGENCE ANALYTICS ===== */}
