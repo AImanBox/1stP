@@ -2,14 +2,50 @@
 
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 // Dynamically import Plotly to avoid SSR issues
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 
+interface DataPoint {
+  x: number;
+  y: number;
+  z: number;
+  rpm: number;
+  torque: number;
+  failure: number;
+}
+
 export default function IOOutput() {
   // Camera view state
   const [cameraView, setCameraView] = useState<'3d' | 'top' | 'front' | 'side'>('3d');
+  const [data, setData] = useState<DataPoint[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch dataset on component mount
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('/api/dataset');
+        const result = await response.json();
+        
+        if (result.success) {
+          setData(result.data);
+          setError(null);
+        } else {
+          setError(result.error || 'Failed to load dataset');
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Error fetching data');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   // Input Features Definition
   const inputFeatures = [
     {
@@ -49,35 +85,10 @@ export default function IOOutput() {
     }
   ];
 
-  // Generate 3D scatter plot data - Tool Wear vs Process Temp vs Air Temp vs Failure
-  // Convert Kelvin to Celsius: °C = K - 273.15
+  // Use actual dataset for scatter plot
   const scatter3DData = useMemo(() => {
-    const noFailureData = [
-      { x: 10, y: 305 - 273.15, z: 298 - 273.15, failure: 0 },
-      { x: 25, y: 308 - 273.15, z: 300 - 273.15, failure: 0 },
-      { x: 30, y: 303 - 273.15, z: 299 - 273.15, failure: 0 },
-      { x: 15, y: 300 - 273.15, z: 297 - 273.15, failure: 0 },
-      { x: 35, y: 302 - 273.15, z: 301 - 273.15, failure: 0 },
-      { x: 5, y: 298 - 273.15, z: 295 - 273.15, failure: 0 },
-      { x: 38, y: 304 - 273.15, z: 302 - 273.15, failure: 0 },
-      { x: 12, y: 299 - 273.15, z: 296 - 273.15, failure: 0 },
-      { x: 42, y: 306 - 273.15, z: 303 - 273.15, failure: 0 },
-      { x: 8, y: 297 - 273.15, z: 294 - 273.15, failure: 0 },
-      { x: 20, y: 301 - 273.15, z: 298 - 273.15, failure: 0 },
-      { x: 28, y: 307 - 273.15, z: 304 - 273.15, failure: 0 },
-      { x: 45, y: 310 - 273.15, z: 305 - 273.15, failure: 1 },
-      { x: 85, y: 312 - 273.15, z: 303 - 273.15, failure: 1 },
-      { x: 120, y: 315 - 273.15, z: 304 - 273.15, failure: 1 },
-      { x: 95, y: 311 - 273.15, z: 302 - 273.15, failure: 1 },
-      { x: 110, y: 314 - 273.15, z: 305 - 273.15, failure: 1 },
-      { x: 70, y: 309 - 273.15, z: 301 - 273.15, failure: 1 },
-      { x: 88, y: 311 - 273.15, z: 302 - 273.15, failure: 1 },
-      { x: 100, y: 313 - 273.15, z: 304 - 273.15, failure: 1 },
-      { x: 78, y: 310 - 273.15, z: 303 - 273.15, failure: 1 },
-      { x: 130, y: 316 - 273.15, z: 305 - 273.15, failure: 1 },
-    ];
-    return noFailureData;
-  }, []);
+    return data;
+  }, [data]);
 
   // Get camera configuration based on selected view
   const getCameraConfig = () => {
@@ -112,6 +123,34 @@ export default function IOOutput() {
 
       {/* Content */}
       <div className="max-w-6xl mx-auto px-6 py-12">
+        {/* Loading State */}
+        {loading && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+            <div className="flex items-center gap-3">
+              <div className="animate-spin h-5 w-5 border-2 border-blue-600 border-t-transparent rounded-full"></div>
+              <span className="text-blue-700 font-semibold">Loading dataset...</span>
+            </div>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
+            <span className="text-red-700 font-semibold">❌ {error}</span>
+          </div>
+        )}
+
+        {/* Data Loaded Successfully */}
+        {!loading && !error && (
+          <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
+            <span className="text-green-700 font-semibold">✓ Dataset loaded: {scatter3DData.length.toLocaleString()} total records</span>
+            <div className="text-green-600 text-sm mt-2">
+              <span className="inline-block mr-6">🟢 No failures: {scatter3DData.filter(d => d.failure === 0).length.toLocaleString()}</span>
+              <span className="inline-block">🔴 Failures: {scatter3DData.filter(d => d.failure === 1).length.toLocaleString()}</span>
+            </div>
+          </div>
+        )}
+        
         {/* 3D Scatter Plot */}
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">3D Feature Analysis: Tool Wear, Process Temperature & Air Temperature</h2>
@@ -169,6 +208,7 @@ export default function IOOutput() {
             </button>
           </div>
           
+          {!loading && scatter3DData.length > 0 && (
           <div style={{ width: '100%', height: '600px' }}>
             <Plot
               data={[
@@ -180,10 +220,10 @@ export default function IOOutput() {
                   type: 'scatter3d',
                   name: 'No Failure',
                   marker: {
-                    size: 6,
+                    size: 4,
                     color: '#22c55e',
-                    opacity: 0.8,
-                    line: { color: '#16a34a', width: 1 }
+                    opacity: 0.7,
+                    line: { color: '#16a34a', width: 0.5 }
                   }
                 },
                 {
@@ -194,10 +234,10 @@ export default function IOOutput() {
                   type: 'scatter3d',
                   name: 'Machine Failure',
                   marker: {
-                    size: 6,
+                    size: 4,
                     color: '#ef4444',
-                    opacity: 0.8,
-                    line: { color: '#dc2626', width: 1 }
+                    opacity: 0.7,
+                    line: { color: '#dc2626', width: 0.5 }
                   }
                 }
               ]}
@@ -254,6 +294,7 @@ export default function IOOutput() {
               style={{ width: '100%', height: '100%' }}
             />
           </div>
+          )}
           
           <div className="mt-4 p-4 bg-blue-50 rounded-lg">
             <p className="text-sm text-gray-700">

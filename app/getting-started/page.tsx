@@ -38,6 +38,14 @@ export default function GettingStarted() {
     },
     {
       id: 5,
+      title: 'Failure Predictions',
+      description: 'Real-time risk assessment and maintenance alerts',
+      icon: '⚠️',
+      href: '/getting-started/failure-predictions',
+      color: 'from-red-500 to-red-600',
+    },
+    {
+      id: 6,
       title: 'Others',
       description: 'Additional resources and documentation',
       icon: '📚',
