@@ -90,29 +90,6 @@ export default function GettingStarted() {
             </Link>
           ))}
         </div>
-
-        {/* Quick Stats */}
-        <div className="mt-16 bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Project Overview</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600">10K</div>
-              <p className="text-gray-600 mt-2">Data Samples</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-600">15+</div>
-              <p className="text-gray-600 mt-2">Features</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600">2</div>
-              <p className="text-gray-600 mt-2">ML Models</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-orange-600">99%</div>
-              <p className="text-gray-600 mt-2">Accuracy</p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

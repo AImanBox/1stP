@@ -26,23 +26,6 @@ export default function Implementation() {
     },
   ];
 
-  const models = [
-    {
-      name: 'XGBoost',
-      rocAuc: '0.9969',
-      precision: '1.0',
-      recall: '0.9706',
-      f1: '0.9851',
-    },
-    {
-      name: 'LightGBM',
-      rocAuc: '0.9916',
-      precision: '1.0',
-      recall: '0.9706',
-      f1: '0.9851',
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -73,47 +56,6 @@ export default function Implementation() {
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Model Performance */}
-        <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Model Performance Metrics</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="px-4 py-3 text-left font-semibold text-gray-900">Model</th>
-                  <th className="px-4 py-3 text-left font-semibold text-gray-900">ROC-AUC</th>
-                  <th className="px-4 py-3 text-left font-semibold text-gray-900">Precision</th>
-                  <th className="px-4 py-3 text-left font-semibold text-gray-900">Recall</th>
-                  <th className="px-4 py-3 text-left font-semibold text-gray-900">F1-Score</th>
-                </tr>
-              </thead>
-              <tbody>
-                {models.map((model, idx) => (
-                  <tr key={idx} className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="px-4 py-3 font-semibold text-gray-900">{model.name}</td>
-                    <td className="px-4 py-3 text-green-600 font-semibold">{model.rocAuc}</td>
-                    <td className="px-4 py-3 text-green-600 font-semibold">{model.precision}</td>
-                    <td className="px-4 py-3 text-green-600 font-semibold">{model.recall}</td>
-                    <td className="px-4 py-3 text-green-600 font-semibold">{model.f1}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Additional Tools */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Analysis Tools</h2>
-          <Link href="/getting-started/implementation/io-output">
-            <button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
-              <span>📊</span>
-              <span>I/Output</span>
-            </button>
-          </Link>
-          <p className="text-gray-600 text-sm mt-2">View input/output scatter plot and feature analysis</p>
         </div>
 
         {/* Technology Stack */}

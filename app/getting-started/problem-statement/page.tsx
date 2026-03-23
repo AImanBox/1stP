@@ -50,7 +50,7 @@ export default function ProblemStatement() {
         <div className="mt-6 bg-yellow-50 rounded-lg p-6">
           <h3 className="text-xl font-bold text-yellow-900 mb-3">Dataset</h3>
           <p className="text-gray-700 mb-3">
-            Our dataset contains 10,000 records of machine operational parameters including:
+            Our dataset contains 136,428 training records and 90,953 inference records of machine operational parameters including:
           </p>
           <ul className="grid grid-cols-2 gap-2 text-gray-700">
             <li>• Air temperature</li>

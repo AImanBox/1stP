@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface PredictionData {
   total_records: number;
@@ -76,22 +75,6 @@ export default function FailurePredictions() {
 
   if (!predictions) return null;
 
-  // Prepare chart data
-  const riskDistribution = Object.entries(predictions.risk_distribution).map(([name, value]) => ({
-    name: name.replace(/_/g, ' '),
-    value: value as number,
-  }));
-
-  const probabilityStats = [
-    { metric: 'Mean', value: predictions.probability_stats.mean.toFixed(4) },
-    { metric: 'Median', value: predictions.probability_stats.median.toFixed(4) },
-    { metric: 'Std Dev', value: predictions.probability_stats.std.toFixed(4) },
-    { metric: 'Min', value: predictions.probability_stats.min.toFixed(4) },
-    { metric: 'Max', value: predictions.probability_stats.max.toFixed(4) },
-  ];
-
-  const COLORS = ['#10b981', '#f97316', '#ef4444', '#8b5cf6', '#dc2626'];
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -101,89 +84,16 @@ export default function FailurePredictions() {
             ← Back to Getting Started
           </Link>
           <h1 className="text-4xl font-bold text-gray-900">Machine Failure Predictions</h1>
-          <p className="text-gray-600 mt-2">LightGBM Model (ROC-AUC: 0.9933) - Real-time Risk Assessment</p>
+          <p className="text-gray-600 mt-2">XGBoost Model (ROC-AUC: 0.9469) - Test Dataset Predictions</p>
         </div>
       </div>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         
-        {/* ===== ITEM 1: PREDICTIVE MAINTENANCE SCORING ===== */}
+        {/* ===== ITEM 1: PROBABILITY DISTRIBUTION & SUMMARY ALERTS ===== */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">📊 1. Predictive Maintenance Scoring</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            {/* Total Records Card */}
-            <div className="bg-white rounded-lg shadow p-6 border-l-4 border-blue-600">
-              <p className="text-gray-600 text-sm">Total Records Analyzed</p>
-              <p className="text-3xl font-bold text-blue-600 mt-2">{predictions.total_records.toLocaleString()}</p>
-            </div>
-
-            {/* Predicted Failures Card */}
-            <div className="bg-white rounded-lg shadow p-6 border-l-4 border-red-600">
-              <p className="text-gray-600 text-sm">Predicted Failures</p>
-              <p className="text-3xl font-bold text-red-600 mt-2">{predictions.predicted_failures}</p>
-              <p className="text-sm text-gray-500 mt-1">{(predictions.failure_rate * 100).toFixed(2)}% failure rate</p>
-            </div>
-
-            {/* Mean Probability Card */}
-            <div className="bg-white rounded-lg shadow p-6 border-l-4 border-yellow-600">
-              <p className="text-gray-600 text-sm">Mean Failure Probability</p>
-              <p className="text-3xl font-bold text-yellow-600 mt-2">{predictions.probability_stats.mean.toFixed(4)}</p>
-            </div>
-
-            {/* Safety Percentage Card */}
-            <div className="bg-white rounded-lg shadow p-6 border-l-4 border-green-600">
-              <p className="text-gray-600 text-sm">Safe Operation Rate</p>
-              <p className="text-3xl font-bold text-green-600 mt-2">
-                {((1 - predictions.failure_rate) * 100).toFixed(2)}%
-              </p>
-            </div>
-          </div>
-
-          {/* Risk Distribution */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Risk Distribution</h3>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={riskDistribution}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, value }) => `${name}: ${value}`}
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {riskDistribution.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-
-            {/* Statistics Table */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Probability Statistics</h3>
-              <div className="space-y-3">
-                {probabilityStats.map((stat, idx) => (
-                  <div key={idx} className="flex justify-between items-center pb-2 border-b">
-                    <span className="text-gray-600">{stat.metric}</span>
-                    <span className="font-mono font-semibold text-gray-900">{stat.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ===== ITEM 2: PROBABILITY DISTRIBUTION & SUMMARY ALERTS ===== */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">📊 2. Probability Distribution & Summary</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">📊 1. Probability Distribution & Summary</h2>
           
           {/* Alert Banner */}
           <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-lg shadow p-6 mb-6 border-l-4 border-red-600">
@@ -355,9 +265,9 @@ export default function FailurePredictions() {
           </div>
         </div>
 
-        {/* ===== ITEM 3: BUSINESS INTELLIGENCE ANALYTICS ===== */}
+        {/* ===== ITEM 2: BUSINESS INTELLIGENCE ANALYTICS ===== */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">📈 3. Business Intelligence Analytics</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">📈 2. Business Intelligence Analytics</h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Key Metrics */}
@@ -392,8 +302,8 @@ export default function FailurePredictions() {
 
                 <div className="bg-blue-50 rounded p-4 mt-4">
                   <p className="text-sm text-gray-600">Model Performance Score</p>
-                  <p className="text-2xl font-bold text-blue-600 mt-2">99.33%</p>
-                  <p className="text-xs text-gray-500 mt-1">LightGBM ROC-AUC Score</p>
+                  <p className="text-2xl font-bold text-blue-600 mt-2">94.00%</p>
+                  <p className="text-xs text-gray-500 mt-1">XGBoost ROC-AUC Score</p>
                 </div>
               </div>
             </div>
@@ -454,29 +364,6 @@ export default function FailurePredictions() {
                   <li>• Invest in equipment upgrades</li>
                 </ul>
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Summary Statistics */}
-        <div className="bg-white rounded-lg shadow p-8 border-t-4 border-purple-600">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Summary Report</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div>
-              <p className="text-3xl font-bold text-purple-600">{predictions.total_records.toLocaleString()}</p>
-              <p className="text-gray-600 text-sm mt-1">Total Machines Analyzed</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-red-600">{predictions.predicted_failures}</p>
-              <p className="text-gray-600 text-sm mt-1">High-Risk Predictions</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-blue-600">99.33%</p>
-              <p className="text-gray-600 text-sm mt-1">Model Accuracy</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-green-600">{((1 - predictions.failure_rate) * 100).toFixed(1)}%</p>
-              <p className="text-gray-600 text-sm mt-1">Safe Operations</p>
             </div>
           </div>
         </div>

@@ -12,8 +12,8 @@ interface DataPoint {
 
 export async function GET() {
   try {
-    // Read the CSV file from docs folder
-    const csvPath = join(process.cwd(), '..', 'docs', 'machine_failure.csv');
+    // Read the CSV file from docs folder (train_tr.csv - 80% split from original GitHub dataset)
+    const csvPath = join(process.cwd(), '..', 'docs', 'train_tr.csv');
     const fileContent = readFileSync(csvPath, 'utf-8');
     
     const lines = fileContent.split('\n');
